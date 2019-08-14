@@ -20,15 +20,25 @@ object ReadHbase {
     val columnFamily2 = "payload"
     val tableName = "spark_hbase_task"
     val hTable = new HTable(hconf, tableName)
-     
-     for(lines <- 0 to 2){
-    val g = new Get(Bytes.toBytes("rowkey" + lines))
+     val stringArray = Array("001","002","007")
+     for(line <- 0 to stringArray.length){
+    val g = new Get(Bytes.toBytes(stringArray(line)))
     val result = hTable.get(g)
-    val result2 = result.getValue(Bytes.toBytes("metadata"),Bytes.toBytes("id"))
+    val id = result.getValue(Bytes.toBytes("metadata"),Bytes.toBytes("id"))
+    val name = result.getValue(Bytes.toBytes(columnFamily2),Bytes.toBytes("name"))
+    val l_name = result.getValue(Bytes.toBytes(columnFamily2),Bytes.toBytes("l_name"))
+    val data = result.getValue(Bytes.toBytes(columnFamily2),Bytes.toBytes("data"))
+    val comments = result.getValue(Bytes.toBytes(columnFamily2),Bytes.toBytes("comments"))
    // println(result2.toString())
-     
-    println("NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW")
-    val value=result.value()
-    println(Bytes.toString(value))}
+      
+    val df =(id,name,l_name,data,comments)
+     println("WRRRRRRRRRRRRRRRRRONG ROWKEY")
+     val df1 = Seq((Bytes.toString(df._1),Bytes.toString(df._2),Bytes.toString(df._3),Bytes.toString(df._4),Bytes.toString(df._5)))
+     val rdd = sc.parallelize(df1)
+     rdd.collect().foreach(println)
+     }
+   //  val rdd = df1.
+    //val value=result.value().
+    //println(Bytes.toString(value))
   }
 }

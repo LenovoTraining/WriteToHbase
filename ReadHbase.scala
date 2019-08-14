@@ -21,14 +21,14 @@ object ReadHbase {
     val tableName = "spark_hbase_task"
     val hTable = new HTable(hconf, tableName)
      
-     
-    val g = new Get(Bytes.toBytes("rowkey0"))
+     for(lines <- 0 to 2){
+    val g = new Get(Bytes.toBytes("rowkey" + lines))
     val result = hTable.get(g)
     val result2 = result.getValue(Bytes.toBytes("metadata"),Bytes.toBytes("id"))
-    println(result2.toString())
-    
+   // println(result2.toString())
+     
     println("NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW")
     val value=result.value()
-    println(Bytes.toString(value))
+    println(Bytes.toString(value))}
   }
 }

@@ -45,7 +45,7 @@ object WriteToHbase {
     val row4 = row2.collect()
 
     for (line <- row4) {
-      val p = new Put(Bytes.toBytes("rowkey " + line._1))
+      val p = new Put(Bytes.toBytes(line._1))
       p.addColumn(Bytes.toBytes(columnFamily1), Bytes.toBytes("id"), Bytes.toBytes(line._1))
       p.addColumn(Bytes.toBytes(columnFamily2), Bytes.toBytes("name"), Bytes.toBytes(line._2))
       p.addColumn(Bytes.toBytes(columnFamily2), Bytes.toBytes("l_name"), Bytes.toBytes(line._3))
